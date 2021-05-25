@@ -42,7 +42,7 @@ FILE=$hostsFolder"/"$1"/index.php";
 	phpinfo();
 	?>
 	EOF
-
+chmod -R +777 $hostsFolder"/"$1;
 
 cat > $availabelHostsFolder$1.conf <<- EOF
 # server successfully created
