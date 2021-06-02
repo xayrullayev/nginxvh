@@ -3,6 +3,7 @@
 availabelHostsFolder="/etc/nginx/sites-available/"
 enabledHostsFolder="/etc/nginx/sites-enabled/"
 hostsFolder="/var/www/";
+locationConf="try_files \$uri \$uri/ /index.php\$is_args\$args;";
 
 echo 'Starting ad vitual host';
 echo '';
@@ -47,13 +48,16 @@ chmod -R +777 $hostsFolder"/"$1;
 cat > $availabelHostsFolder$1.conf <<- EOF
 # server successfully created
 server {
-        listen 80;
-        server_name $1;
-        root /var/www/$1;
-        index  index.html index.php;
+    listen 80;
+    listen [::]:80;
 
-	 location / {
-                try_files $uri $uri/ /index.php$is_args$args;
+    server_name $1;
+
+    root   /var/www/$1;
+    index  index.html index.php;
+
+	location / {
+                $locationConf
         }
 
         location ~ \.php$ {
@@ -64,7 +68,6 @@ server {
         location ~ /\.ht {
                 deny all;
         }
-}
 }
 EOF
 
